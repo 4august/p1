@@ -5,18 +5,17 @@ let stickers = document.querySelectorAll("input[type='checkbox']");
 let stickersLabel = document.querySelectorAll(".stickers-options label");
 let observacoes = document.querySelector("#observacoes")
 
-
 document.querySelector(".enviar button").addEventListener("click", e => {
     let erro = false;
 
     if(stickers[0].checked == false && stickers[1].checked == false && stickers[2].checked == false ){
         stickersLabel.forEach(label => label.classList.add("erro-span"))
+        stickers.forEach(checkbox => checkbox.classList.add("erro-span"))
         erro =  true
     }else{
         stickerChecked = true
         stickersLabel.forEach(label => label.classList.remove("erro-span"))
     }
-  
     if (qtdStickers.value == 0 || qtdStickers.value == ""){
         qtdStickers.classList.add("erro");
         erro =  true
@@ -25,8 +24,13 @@ document.querySelector(".enviar button").addEventListener("click", e => {
         observacoes.classList.add("erro")
         erro =  true
     }
+    document.querySelector(".enviar span").innerHTML = ``;
+
     if (erro == false) {
-        document.querySelector(".enviar span").innerHTML = `Formulário enviado com sucesso!`
+        document.querySelector(".enviar span").innerHTML = `Formulário enviado com sucesso!`;
+        qtdStickers.value = '';
+        observacoes.value = '';
+        stickers.forEach(checkbox => checkbox.checked = '')
     }
     e.preventDefault()
 })
@@ -38,7 +42,6 @@ btnDiminuir.addEventListener("click", e => {
         qtdStickers.value = 0;
         btnDiminuir.setAttribute("disabled", "disabled");
         btnDiminuir.style.backgroundColor = "#C5CFD6";
-
     }
 })
 btnAumentar.addEventListener("click", e => {
@@ -51,3 +54,9 @@ btnAumentar.addEventListener("click", e => {
     }
 })
 observacoes.addEventListener("keypress", () => observacoes.classList.remove("erro"))
+stickers.forEach(checkbox => {
+    checkbox.addEventListener("click", ()=>{
+        stickersLabel.forEach(label => label.classList.remove("erro-span"))
+        stickers.forEach(checkbox => checkbox.classList.remove("erro-span"))
+    })
+})
